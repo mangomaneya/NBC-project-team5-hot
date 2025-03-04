@@ -23,7 +23,7 @@ export default function MapController() {
   return (
     <div className='flex items-center gap-4'>
       <select
-        className=' w-[200px] h-[50px] border-solid border-[6px] rounded-xl border-neutral-300'
+        className=' w-[200px] h-[50px] border-solid border-[6px] rounded-xl border-neutral-300 hover:border-lime-600 transition-colors duration-200'
         value={coordinate}
         onChange={handleSelect}
       >

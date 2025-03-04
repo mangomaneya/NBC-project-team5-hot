@@ -4,19 +4,23 @@ import Loading from '../common/Loading';
 import Error from '../common/Error';
 import { openAlert } from '@/lib/utils/openAlert';
 import { ALERT_TYPE } from '@/constants/alert-constant';
+import { useGetHotplaces } from '@/lib/queries/GetHotplaces';
+import { STORE_CONSTANT } from '@/constants/store-constant';
 const { ERROR } = ALERT_TYPE;
-//TODO: hotplaces 데이터를 디테일 리스트에서 받아오기   (아래는 테스트를 위한 목데이터)
-const STORE_NAME = '양복점';
-const AREA = '용산';
-const STORE_ID = '1c3a14f9-2664-4e9b-8435-71d620716efc';
+const { STORE_NAME, AREA } = STORE_CONSTANT;
 
-//@TODO: closeModal 받아오기
-export default function YoutubeModal() {
+export default function YoutubeModal({ id: storeId, setOpenModal }) {
+  const { data } = useGetHotplaces();
+  const _data = data.filter(({ id }) => id === storeId)[0];
   const { youtubeData, isPending, isError, error } = useYoutubeQuery({
-    storeName: STORE_NAME,
-    area: AREA,
-    storeId: STORE_ID,
+    storeName: _data[STORE_NAME],
+    area: _data[AREA],
+    storeId,
   });
+
+  const closeYoutubeModal = () => {
+    setOpenModal({ detail: false, youtube: false });
+  };
 
   if (isPending) {
     return (
@@ -36,8 +40,10 @@ export default function YoutubeModal() {
   }
 
   return (
-    <section className='youtubeModal fixedCenter'>
-      <button className='modalBtn !py-2 !mb-4'>유튜브 닫기</button>
+    <section className='youtubeModal fixedCenter z-[1000]'>
+      <button className='modalBtn !py-2 !mb-4' onClick={closeYoutubeModal}>
+        유튜브 닫기
+      </button>
       {youtubeData?.map((data, index) => (
         <div
           key={data.title}

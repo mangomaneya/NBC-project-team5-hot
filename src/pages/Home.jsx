@@ -1,10 +1,11 @@
-import KakaoMap from '@/components/map-api/KakaoMap';
 import HotplaceList from '@/components/HotplaceList/HotplaceList';
+import KakaoMap from '@/components/map-api/KakaoMap';
+
 export default function Home() {
   return (
-    <div className='flex justify-around '>
-      <KakaoMap className='flex-auto' />
-      <HotplaceList className='w-1/3' />
+    <div className='flex w-[1280px] mx-auto h-screen'>
+      <KakaoMap className='flex-1' />
+      <HotplaceList className='w-[200px]' />
     </div>
   );
 }
