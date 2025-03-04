@@ -10,7 +10,7 @@ const BookMark = () => {
   const { data: bookmarkList = [], isPending, isError } = useGetBookmarks();
   const booksNum = bookmarkList.length;
   const [selectPost, setSelectPost] = useState(null);
-  const { userData } = useAuthStore((state) => state.userData);
+  const userData = useAuthStore((state) => state.userData);
   const userNickName = userData.userNickname;
 
   if (isPending) {

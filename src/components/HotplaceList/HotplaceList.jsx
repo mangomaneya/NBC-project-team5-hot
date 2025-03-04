@@ -1,23 +1,27 @@
 import { useState } from 'react';
 import { useGetHotplaces } from '@/lib/queries/GetHotplaces';
-import DetailModal from '../modal/detail-modal';
+import DetailModal from '@/components/modal/detail-modal';
 import { STORE_CONSTANT } from '@/constants/store-constant';
+import Loading from '@/components/common/Loading';
+import Error from '@/components/common/Error';
+import useAreaStore from '@/store/zustand/useAreaStore';
 
 const HotplaceList = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
-  const { data: hotplaces = [], isPending, isError } = useGetHotplaces();
+  const selectedArea = useAreaStore((state) => state.selectedArea);
+  const { data: hotplaces = [], isPending, isError } = useGetHotplaces({ area: selectedArea });
 
   function toggleHotPlaceList() {
     setIsVisible((prev) => !prev);
   }
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <Loading />;
   }
 
   if (isError) {
-    return <div>에러가 발생했습니다.</div>;
+    return <Error />;
   }
 
   function closeModal() {

@@ -3,7 +3,7 @@ import supabase from '@api/supabaseAPI';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetBookmarks = () => {
-  const { userData } = useAuthStore((state) => state.userData);
+  const userData = useAuthStore((state) => state.userData);
   const userId = userData.userId; // 현재 로그인 한 사용자의 ID
 
   const getBookmarks = async () => {
