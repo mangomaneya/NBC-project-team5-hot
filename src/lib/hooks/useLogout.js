@@ -17,15 +17,15 @@ export default function useLogout() {
 
     // confirm 후 로그아웃 - 메인화면으로 이동
     if (response.isConfirmed) {
-      try {
-        openAlert({ type: SUCCESS, text: '정상적으로 로그아웃 되었습니다.' });
-        await supabase.auth.signOut();
-        //전역상태 유저정보 리셋
-        resetUserData();
-        navigate(HOME, { replace: true });
-      } catch (error) {
-        //에러발생시 알러트로 에러 안내
-        openAlert({ type: ERROR, text: { error } });
+      openAlert({ type: SUCCESS, text: '정상적으로 로그아웃 되었습니다.' });
+      const { error } = await supabase.auth.signOut();
+      //전역상태 유저정보 리셋
+      resetUserData();
+      navigate(HOME, { replace: true });
+
+      //에러발생시 alert (범용 메시지 적용)
+      if (error) {
+        openAlert({ type: ERROR, text: '알 수 없는 문제가 발생했습니다. 다시 시도해주세요.' });
         return;
       }
     }
