@@ -6,6 +6,7 @@ import { openAlert } from '@/lib/utils/openAlert';
 import { ALERT_TYPE } from '@/constants/alert-constant';
 import useAreaStore from '@/store/zustand/useAreaStore';
 import DetailModal from '../modal/detail-modal';
+import YoutubeModal from '../modal/youtube-modal';
 const { ERROR } = ALERT_TYPE;
 function KakaoMap() {
   const mapContainer = useRef(null); //지도 컨테이너
@@ -16,7 +17,7 @@ function KakaoMap() {
   const [dataLoading, setDataLoading] = useState(true);
   //현재 컴포넌트 렌더링 시 markerData===0이기 때문에 로딩 상태를 위한 상태 선언
 
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState({ detail: false, youtube: false });
   //supabase의 데이터 호출부
   //supabase의 hotplaces 데이터 테이블로부터 데이터를 불러온다
   useEffect(() => {
@@ -107,7 +108,7 @@ function KakaoMap() {
         //커스텀 오버레이 이벤트 등록록
         overlayContent.querySelector(`#detail-btn-${item.id}`).addEventListener('click', () => {
           setSelectedMarker({ id: item.id, name: item.name, area: item.area });
-          setIsDetailModalOpen(true);
+          setOpenModal({ detail: true, youtube: false });
         });
 
         //이벤트 등록
@@ -152,9 +153,8 @@ function KakaoMap() {
       </div>
       <div className='flex w-full h-[480px]'>
         <div id='map' ref={mapContainer} className='w-full h-full'></div>
-        {isDetailModalOpen && selectedMarker && (
-          <DetailModal id={selectedMarker.id} closeModal={() => setIsDetailModalOpen(false)} />
-        )}
+        {openModal.detail && selectedMarker && <DetailModal id={selectedMarker.id} setOpenModal={setOpenModal} />}
+        {openModal.youtube && selectedMarker && <YoutubeModal id={selectedMarker.id} setOpenModal={setOpenModal} />}
       </div>
     </div>
   );
